@@ -20,7 +20,7 @@ public class JDBCSubjectFactory implements SubjectDao {
         this.connection = connection;
         properties = new Properties();
         try {
-            properties.load(new FileInputStream("D:\\Sasha\\Work\\Training\\FinalProject\\JavaEE\\StudentTesting\\src\\main\\resources\\db.properties"));
+            properties.load(new FileInputStream("D:\\Sasha\\Work\\Training\\FinalProject\\JavaEE\\StudentTesting\\src\\main\\resources\\sql.properties"));
         } catch (IOException e) {
             logger.error("IOException in JDBCSubjectFactory: JDBCSubjectFactory", e);
         }

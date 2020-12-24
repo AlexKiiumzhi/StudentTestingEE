@@ -4,16 +4,15 @@ import model.dao.DaoFactory;
 import model.dao.UserDao;
 import model.entity.User;
 
-import java.util.List;
 import java.util.regex.Pattern;
 
 public class UserService {
 
     DaoFactory daoFactory = DaoFactory.getInstance();
 
-    public void create(User user) {
+    public void createUser(User user) {
         UserDao dao = daoFactory.createUserDao();
-        dao.create(user);
+        dao.createUser(user);
     }
 
     public User findByEmail(String email) {
@@ -22,6 +21,15 @@ public class UserService {
         return user;
     }
 
+    public void blockUser(Long userId){
+        UserDao dao = daoFactory.createUserDao();
+        dao.blockUser(userId);
+    }
+
+    public void unblockUser(Long userId){
+        UserDao dao = daoFactory.createUserDao();
+        dao.unblockUser(userId);
+    }
     public boolean validateNullRegistration(User user, String age) {
         if (user.getEnFirstName() == null || user.getEnLastName() == null || user.getUaFirstName() == null ||
                 user.getUaLastName() == null || user.getEmail() == null || user.getPassword() == null ||

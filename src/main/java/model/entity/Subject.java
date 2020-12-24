@@ -35,4 +35,8 @@ public class Subject {
         this.uaName = uaName;
     }
 
+    @Override
+    public String toString() {
+        return  enName ;
+    }
 }

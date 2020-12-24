@@ -20,7 +20,7 @@ public class FindAllTestsCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request) {
-        int recordPerPage = 27;
+        int recordPerPage = 3;
         int pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
         int startIndex = (pageNumber * recordPerPage) - recordPerPage;
         int totalNumberOfRecords = testService.numberOfRows();

@@ -49,7 +49,7 @@ public class RegisterCommand implements Command {
             return "redirect:registrationPage";
         }
         user.setAge(Integer.parseInt(age));
-        userService.create(user);
+        userService.createUser(user);
         return "redirect:loginPage";
     }
 }

@@ -1,4 +1,6 @@
-package controller.command;
+package controller.command.Admin;
+
+import controller.command.Command;
 
 import javax.servlet.http.HttpServletRequest;
 

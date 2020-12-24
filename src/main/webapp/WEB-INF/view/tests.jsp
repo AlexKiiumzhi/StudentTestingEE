@@ -26,10 +26,11 @@
                 </select>
                 <br><input type="submit" value="<fmt:message key="submit.button"/>"/>
             </form>
+
             <table class="w3-table w3-bordered w3-striped">
                 <thead>
                     <tr>
-                        <th><fmt:message key="tests.name"/></th>
+                        <th><fmt:message key="tests.en_name"/></th>
                         <th><fmt:message key="tests.difficulty"/></th>
                         <th><fmt:message key="tests.question_amount"/></th>
                         <th><fmt:message key="tests.test_date"/></th>
@@ -47,7 +48,7 @@
                                     <th><c:out value="${test.difficulty}"/></th>
                                     <th><c:out value="${test.questionAmount}"/></th>
                                     <th><c:out value="${test.testDate}"/></th>
-                                    <th><c:out value="${subject.uaName}"/></th>
+                                    <th><c:out value="${test.subject}"/></th>
 
                                 </c:when>
                                 <c:otherwise>
@@ -55,7 +56,8 @@
                                     <th><c:out value="${test.difficulty}"/></th>
                                     <th><c:out value="${test.questionAmount}"/></th>
                                     <th><c:out value="${test.testDate}"/></th>
-                                    <th><c:out value="${subject.enName}"/></th>
+                                    <th><c:out value="${test.subject}"/></th>
+
 
                                 </c:otherwise>
                             </c:choose>

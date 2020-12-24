@@ -1,6 +1,7 @@
 package controller;
 
 import controller.command.*;
+import controller.command.Admin.*;
 import model.service.SubjectService;
 import model.service.TestService;
 import model.service.UserService;
@@ -20,19 +21,22 @@ public class Servlet extends HttpServlet {
     public void init() {
         getServletContext().setAttribute("loggedUsers", new HashSet<String>());
 
-        commands.put("home", new ShowHomeCommand());
-       /* commands.put("about", new ShowAboutCommand());
-        commands.put("subjects", new FindAllSubjectsCommand(new SubjectService()));
-        commands.put("searchByFaculty", new SearchSpecialityByFacultyCommand(new SpecialityService(), new FacultyService()));*/
+        commands.put("admin/home", new AdminShowHomeCommand());
+        commands.put("admin/blockUser", new BlockUserCommand(new UserService()));
+        commands.put("admin/unblockUser", new UnblockUserCommand(new UserService()));
+        commands.put("admin/testPage", new ShowTestsPage());
+        commands.put("admin/testPage/createTest", new CreateTestCommand(new TestService()));
+        commands.put("admin/testPage/editTest", new EditTestCommand(new TestService()));
+        commands.put("admin/testPage/deleteTest", new DeleteTestCommand(new TestService()));
 
+        commands.put("home", new ShowHomeCommand());
+        commands.put("searchBySubject", new SearchTestBySubjectCommand(new TestService(), new SubjectService()));
         commands.put("tests", new FindAllTestsCommand(new TestService(), new SubjectService()));
         commands.put("registrationPage", new ShowRegistrationCommand());
         commands.put("registration", new RegisterCommand(new UserService()));
         commands.put("login", new LoginCommand(new UserService()));
         commands.put("logout", new LogoutCommand());
         commands.put("changeLanguage", new ChangeLanguageCommand());
-
-        commands.put("admin/home", new AdminShowHomeCommand());
     }
 
     @Override

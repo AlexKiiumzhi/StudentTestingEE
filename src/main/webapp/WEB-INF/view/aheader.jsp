@@ -13,12 +13,12 @@
         <div class="w3-bar w3-white w3-padding w3-card" style="letter-spacing:1px;">
             <a href="${pageContext.request.contextPath}/app/admin/home"><fmt:message key="header.application_name"/></a>
             <div class="w3-right">
-                <a href="${pageContext.request.contextPath}/app/admin/exams"><fmt:message key="header.exams"/></a>
+                <%--<a href="${pageContext.request.contextPath}/app/admin/exams"><fmt:message key="header.exams"/></a>
                 <a href="${pageContext.request.contextPath}/app/admin/history"><fmt:message key="header.history"/></a>
                 <a href="${pageContext.request.contextPath}/app/admin/faculties"><fmt:message key="header.faculties"/></a>
-                <a href="${pageContext.request.contextPath}/app/admin/subjects"><fmt:message key="header.subjects"/></a>
-                <a href="${pageContext.request.contextPath}/app/admin/specialities"><fmt:message key="header.specialities"/></a>
-                <a href="${pageContext.request.contextPath}/app/admin/applications"><fmt:message key="header.applications"/></a>
+                <a href="${pageContext.request.contextPath}/app/admin/subjects"><fmt:message key="header.subjects"/></a>--%>
+                <a href="${pageContext.request.contextPath}/app/tests?pageNumber=1"><fmt:message key="header.tests"/></a>
+                <a href="${pageContext.request.contextPath}/app/admin/testPage"><fmt:message key="header.test"/></a>
                 <a href="${pageContext.request.contextPath}/app/logout"><fmt:message key="header.logout"/></a>
                 <a href="${pageContext.request.contextPath}/app/changeLanguage?language=en"><fmt:message key="header.english"/></a>
                 <a href="${pageContext.request.contextPath}/app/changeLanguage?language=uk"><fmt:message key="header.ukrainian"/></a>

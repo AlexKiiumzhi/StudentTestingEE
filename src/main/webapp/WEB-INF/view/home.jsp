@@ -12,11 +12,11 @@
 
         </c:if>
         <c:if test="${not empty user}">
-            <c:if test="${user.role == 'ADMINISTRATOR'}">
+            <c:if test="${user.role == 'ADMIN'}">
                 <jsp:include page="ahome.jsp"/>
             </c:if>
-            <c:if test="${user.role == 'CLIENT'}">
-                <jsp:include page="client/chome.jsp"/>
+            <c:if test="${user.role == 'USER'}">
+                <jsp:include page="uhome.jsp"/>
             </c:if>
         </c:if>
     </body>

@@ -4,7 +4,9 @@ import model.entity.User;
 
 public interface UserDao {
 
-    public void create (User user);
-    public User findByEmail(String email);
-    public void close();
+    void createUser(User user);
+    User findByEmail(String email);
+    void blockUser(Long userId);
+    void unblockUser(Long userId);
+    void close();
 }

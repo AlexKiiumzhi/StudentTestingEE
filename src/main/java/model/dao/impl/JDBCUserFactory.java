@@ -23,16 +23,16 @@ public class JDBCUserFactory implements UserDao {
         this.connection = connection;
         properties = new Properties();
         try {
-            properties.load(new FileInputStream("D:\\Study\\Project\\AdmissionSystem\\src\\main\\resources\\sql.properties"));
+            properties.load(new FileInputStream("D:\\Sasha\\Work\\Training\\FinalProject\\JavaEE\\StudentTesting\\src\\main\\resources\\sql.properties"));
         } catch (IOException e) {
             logger.error("IOException in JDBCUserFactory: JDBCUserFactory", e);
         }
     }
 
     @Override
-    public void create (User user) {
-        try (PreparedStatement statement = connection.prepareStatement(properties.getProperty("USER_INSERT"))){
-            statement.setString(1, user.getRole().name().toLowerCase());
+    public void createUser(User user) {
+        try (PreparedStatement statement = connection.prepareStatement(properties.getProperty("USER_CREATE"))){
+            statement.setString(1, user.getRole().name());
             statement.setString(2, user.getEnFirstName());
             statement.setString(3, user.getUaFirstName());
             statement.setString(4, user.getEnLastName());
@@ -43,12 +43,12 @@ public class JDBCUserFactory implements UserDao {
             statement.setString(9, user.getPhone());
             statement.executeUpdate();
         } catch (SQLException e) {
-            logger.error("SQLException in JDBCSpecialityFactory: create", e);
+            logger.error("SQLException in JDBCUserFactory: create", e);
         } finally {
             try {
                 connection.close();
             } catch (SQLException e) {
-                logger.error("SQLException in JDBCSpecialityFactory: create", e);
+                logger.error("SQLException in JDBCUserFactory: create", e);
             }
         }
     }
@@ -64,15 +64,47 @@ public class JDBCUserFactory implements UserDao {
                 user = userMapper.extractFromResultSet(resultSet);
             }
         } catch (SQLException e) {
-            logger.error("SQLException in JDBCSpecialityFactory: findByEmail", e);
+            logger.error("SQLException in JDBCUserFactory: findByEmail", e);
         } finally {
             try {
                 connection.close();
             } catch (SQLException e) {
-                logger.error("SQLException in JDBCSpecialityFactory: findByEmail", e);
+                logger.error("SQLException in JDBCUserFactory: findByEmail", e);
             }
         }
         return user;
+    }
+
+    @Override
+    public void blockUser(Long userId) {
+        try (PreparedStatement statement = connection.prepareStatement(properties.getProperty("USER_BlOCK"))) {
+            statement.setLong(1, userId);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            logger.error("SQLException in JDBCUserFactory: blockUser", e);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                logger.error("SQLException in JDBCUserFactory: blockUser", e);
+            }
+        }
+    }
+
+    @Override
+    public void unblockUser(Long userId) {
+        try (PreparedStatement statement = connection.prepareStatement(properties.getProperty("USER_UNBlOCK"))) {
+            statement.setLong(1, userId);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            logger.error("SQLException in JDBCUserFactory: blockUser", e);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                logger.error("SQLException in JDBCUserFactory: blockUser", e);
+            }
+        }
     }
 
     @Override
@@ -80,7 +112,7 @@ public class JDBCUserFactory implements UserDao {
         try {
             connection.close();
         } catch (SQLException e) {
-            logger.error("SQLException in JDBCSpecialityFactory: close", e);
+            logger.error("SQLException in JDBCUserFactory: close", e);
             throw new RuntimeException(e);
         }
     }
