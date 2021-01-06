@@ -13,8 +13,6 @@
             <div class="w3-bar w3-white w3-padding w3-card" style="letter-spacing:1px;">
                 <a href="${pageContext.request.contextPath}/app/home"><fmt:message key="header.application_name"/></a>
                 <div class="w3-right">
-                    <%--<a href="${pageContext.request.contextPath}/app/about"><fmt:message key="header.about"/></a>--%>
-                    <%--<a href="${pageContext.request.contextPath}/app/subjects?pageNumber=1"><fmt:message key="header.subjects"/></a>--%>
                     <a href="${pageContext.request.contextPath}/app/tests?pageNumber=1"><fmt:message key="header.tests"/></a>
                     <a href="${pageContext.request.contextPath}/app/registrationPage"><fmt:message key="header.registration"/></a>
                     <a href="${pageContext.request.contextPath}/app/loginPage"><fmt:message key="header.login"/></a>

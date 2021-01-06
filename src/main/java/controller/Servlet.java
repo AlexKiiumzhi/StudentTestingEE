@@ -2,9 +2,9 @@ package controller;
 
 import controller.command.*;
 import controller.command.Admin.*;
-import model.service.SubjectService;
-import model.service.TestService;
-import model.service.UserService;
+import controller.command.User.*;
+import model.entity.enums.Role;
+import model.service.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -21,19 +21,37 @@ public class Servlet extends HttpServlet {
     public void init() {
         getServletContext().setAttribute("loggedUsers", new HashSet<String>());
 
-        commands.put("admin/home", new AdminShowHomeCommand());
+        commands.put("admin/home", new AdminShowHomeCommand(new TestService()));
         commands.put("admin/blockUser", new BlockUserCommand(new UserService()));
         commands.put("admin/unblockUser", new UnblockUserCommand(new UserService()));
-        commands.put("admin/testPage", new ShowTestsPage());
+        commands.put("admin/testPage", new ShowTestsPage(new AnswerService()));
         commands.put("admin/testPage/createTest", new CreateTestCommand(new TestService()));
         commands.put("admin/testPage/editTest", new EditTestCommand(new TestService()));
         commands.put("admin/testPage/deleteTest", new DeleteTestCommand(new TestService()));
+        commands.put("admin/testPage/createQuestion", new CreateQuestionCommand(new QuestionService()));
+        commands.put("admin/testPage/editQuestion", new EditQuestionCommand(new QuestionService()));
+        commands.put("admin/testPage/createAnswer", new CreateAnswerCommand(new AnswerService()));
+        commands.put("admin/testPage/editAnswer", new EditAnswerCommand(new AnswerService()));
+        commands.put("admin/home/editUser", new EditUserCommand(new UserService()));
+        commands.put("admin/searchBySubject", new AdminSearchTestBySubjectCommand(new TestService(), new SubjectService()));
+        commands.put("admin/sortTests", new AdminSortTestsCommand(new TestService(), new SubjectService()));
+        commands.put("admin/tests", new AdminFindAllTestsCommand(new TestService(), new SubjectService()));
+
+        commands.put("user/home", new UserShowHomeCommand(new UserService()));
+        commands.put("user/testPassingPage", new ShowTestPassingPage());
+        commands.put("user/testPassingPage/testSelecting", new TestSelectionCommand(new UserService()));
+        commands.put("user/testPassingPage/testPassing", new TestPassingCommand(new UserService()));
+        commands.put("user/searchBySubject", new UserSearchTestBySubjectCommand(new TestService(), new SubjectService()));
+        commands.put("user/sortTests", new UserSortTestsCommand(new TestService(), new SubjectService()));
+        commands.put("user/tests", new UserFindAllTestsCommand(new TestService(), new SubjectService()));
 
         commands.put("home", new ShowHomeCommand());
         commands.put("searchBySubject", new SearchTestBySubjectCommand(new TestService(), new SubjectService()));
+        commands.put("sortTests", new SortTestsCommand(new TestService(), new SubjectService()));
         commands.put("tests", new FindAllTestsCommand(new TestService(), new SubjectService()));
         commands.put("registrationPage", new ShowRegistrationCommand());
         commands.put("registration", new RegisterCommand(new UserService()));
+        commands.put("loginPage", new ShowLoginCommand());
         commands.put("login", new LoginCommand(new UserService()));
         commands.put("logout", new LogoutCommand());
         commands.put("changeLanguage", new ChangeLanguageCommand());
@@ -50,9 +68,27 @@ public class Servlet extends HttpServlet {
     }
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String userRoleAsString = (String) (request).getSession().getAttribute("role");
+        Role userRole = null;
+        if(userRoleAsString == null) {
+            userRole = Role.GUEST;
+        } else if (userRoleAsString.equals("USER")){
+            userRole = Role.USER;
+        }else if (userRoleAsString.equals("ADMIN")){
+            userRole = Role.ADMIN;
+        }
         String path = request.getRequestURI();
-        path = path.replaceAll(".*/app/", "");
-        Command command = commands.getOrDefault(path, (r) -> "/WEB-INF/view/login.jsp");
+        Command command;
+        if (userRole.equals(Role.GUEST) && (path.contains("user") || path.contains("admin"))) {
+            command = commands.get("home");
+        } else if (path.contains("user") && !userRole.equals(Role.USER)) {
+            command = commands.get("admin/home");
+        } else if (path.contains("admin") && !userRole.equals(Role.ADMIN)) {
+            command = commands.get("user/home");
+        } else {
+            path = path.replaceAll(".*/app/", "");
+            command = commands.getOrDefault(path, (r) -> "/WEB-INF/view/error.jsp");
+        }
         String page = command.execute(request);
         if (page.contains("redirect")) {
             response.sendRedirect(page.replace("redirect:", ""));

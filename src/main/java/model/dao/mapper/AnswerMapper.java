@@ -13,7 +13,7 @@ public class AnswerMapper implements ObjectMapper<Answer>{
     public Answer extractFromResultSet(ResultSet resultSet) throws SQLException {
         Answer answer = new Answer();
 
-        answer.setId(resultSet.getLong("subject.id"));
+        answer.setId(resultSet.getLong("answer.id"));
         answer.setEnAnswer(resultSet.getString("answer.answer_en"));
         answer.setUaAnswer(resultSet.getString("answer.answer_ua"));
         answer.setCorrectnessState(resultSet.getBoolean("answer.correctness_state"));

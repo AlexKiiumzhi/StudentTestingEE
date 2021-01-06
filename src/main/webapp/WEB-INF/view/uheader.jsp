@@ -11,10 +11,10 @@
     <body>
         <div class="w3-top">
             <div class="w3-bar w3-white w3-padding w3-card" style="letter-spacing:1px;">
-                <a href="${pageContext.request.contextPath}/app/client/home"><fmt:message key="header.application_name"/></a>
+                <a href="${pageContext.request.contextPath}/app/user/home"><fmt:message key="header.application_name"/></a>
                 <div class="w3-right">
-                    <a href="${pageContext.request.contextPath}/app/client/subjects"><fmt:message key="header.subjects"/></a>
-                    <%--<a href="${pageContext.request.contextPath}/app/client/specialities"><fmt:message key="header.tests"/></a>--%>
+                    <a href="${pageContext.request.contextPath}/app/user/tests?pageNumber=1"><fmt:message key="header.tests"/></a>
+                    <a href="${pageContext.request.contextPath}/app/user/testPassingPage"><fmt:message key="header.Test_Passing"/></a>
                     <a href="${pageContext.request.contextPath}/app/logout"><fmt:message key="header.logout"/></a>
                     <a href="${pageContext.request.contextPath}/app/changeLanguage?language=en"><fmt:message key="header.english"/></a>
                     <a href="${pageContext.request.contextPath}/app/changeLanguage?language=uk"><fmt:message key="header.ukrainian"/></a>

@@ -2,12 +2,13 @@ package model.service;
 
 import model.dao.DaoFactory;
 import model.dao.TestDao;
-import model.dao.UserDao;
 import model.entity.Test;
-import model.entity.User;
 
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class TestService {
     DaoFactory daoFactory = DaoFactory.getInstance();
@@ -41,8 +42,36 @@ public class TestService {
         TestDao dao = daoFactory.createTestDao();
         dao.deleteTest(testID);
     }
-   /* public List<Test> findAllByName() {
+
+    public List<Test> findAll() {
         TestDao dao = daoFactory.createTestDao();
-        return dao.findAllTestsByName();
-    }*/
+        return dao.findAll();
+    }
+    public List<Test> sortTests(String sortingParameter) {
+        TestDao dao = daoFactory.createTestDao();
+        List<Test> tests = dao.sortTests();
+        switch (sortingParameter){
+            case "enName":
+                tests = tests.stream()
+                        .sorted(Comparator.comparing(Test::getEnName)).collect(Collectors.toList());
+                break;
+            case "uaName":
+                tests = tests.stream()
+                        .sorted(Comparator.comparing(Test::getUaName)).collect(Collectors.toList());
+                break;
+            case "difficulty":
+                tests = tests.stream()
+                        .sorted(Comparator.comparing(Test::getDifficulty)).collect(Collectors.toList());
+                break;
+            case "questionAmount":
+                tests = tests.stream()
+                        .sorted(Comparator.comparing(Test::getQuestionAmount)).collect(Collectors.toList());
+                break;
+            default:
+                tests = tests.stream()
+                        .sorted(Comparator.comparing(Test::getId)).collect(Collectors.toList());
+                break;
+        }
+        return tests;
+    }
 }

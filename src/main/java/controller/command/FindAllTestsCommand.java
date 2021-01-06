@@ -28,12 +28,14 @@ public class FindAllTestsCommand implements Command {
         if (totalNumberOfRecords > numberOfPages * recordPerPage) {
             numberOfPages = numberOfPages + 1;
         }
+
         List<Test> tests = testService.findAllPagination(startIndex, recordPerPage);
-        System.out.println(tests);
         List<Subject> subjects = subjectService.findAll();
         request.setAttribute("tests", tests);
         request.setAttribute("subjects", subjects);
         request.setAttribute("numberOfPages", numberOfPages);
+
+
         return "/WEB-INF/view/tests.jsp";
     }
 }

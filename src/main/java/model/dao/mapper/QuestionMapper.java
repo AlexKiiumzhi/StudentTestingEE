@@ -16,7 +16,6 @@ public class QuestionMapper implements ObjectMapper<Question>{
         question.setId(resultSet.getLong("question.id"));
         question.setEnText(resultSet.getString("question.text_en"));
         question.setUaText(resultSet.getString("question.text_ua"));
-        question.setPass(resultSet.getBoolean("question.pass"));
         return question;
     }
 

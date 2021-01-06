@@ -27,4 +27,5 @@
     <filter-name>EncodingFilter</filter-name>
     <url-pattern>/app/*</url-pattern>
   </filter-mapping>
+
 </web-app>

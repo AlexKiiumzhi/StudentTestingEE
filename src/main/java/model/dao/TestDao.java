@@ -12,5 +12,6 @@ public interface TestDao {
     void createTest (Test test, Long subjectId);
     void editTest (Test test);
     void deleteTest (Long testId);
-    /*public List<Test> findAllTestsByName();*/
+    List<Test> findAll();
+    List<Test> sortTests();
 }

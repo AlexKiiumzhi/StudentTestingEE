@@ -3,7 +3,6 @@ package controller.command;
 import model.entity.User;
 import model.entity.enums.Role;
 import model.service.UserService;
-
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Locale;
@@ -17,7 +16,7 @@ public class LoginCommand implements Command {
     public LoginCommand(UserService userService) {
         this.userService = userService;
         pages.put(Role.ADMIN, "redirect:admin/home");
-        pages.put(Role.USER, "redirect:client/home");
+        pages.put(Role.USER, "redirect:user/home");
     }
 
     @Override
@@ -30,15 +29,15 @@ public class LoginCommand implements Command {
         if(!userService.validateNullLogin(email, password)) {
             request.getSession().setAttribute("ukErrorMessage", ukResourceBundle.getString("login.null_error"));
             request.getSession().setAttribute("enErrorMessage", enResourceBundle.getString("login.null_error"));
-            return "/WEB-INF/view/login.jsp";
+            return "redirect:loginPage";
         }
         User user = userService.findByEmail(email);
         if (password.equals(user.getPassword())) {
             if (CommandUtility.checkUserIsLogged(request, user.getEmail(), user)) {
                 return "/WEB-INF/view/error.jsp";
             }
-            return pages.getOrDefault(user.getRole(), "/WEB-INF/view/login.jsp");
+            return pages.getOrDefault(user.getRole(), "redirect:loginPage");
         }
-        return "/WEB-INF/view/login.jsp";
+        return "redirect:loginPage";
     }
 }

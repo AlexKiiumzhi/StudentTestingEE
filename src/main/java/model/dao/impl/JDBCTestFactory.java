@@ -1,11 +1,8 @@
 package model.dao.impl;
 
 import model.dao.TestDao;
-import model.dao.mapper.QuestionMapper;
 import model.dao.mapper.SubjectMapper;
 import model.dao.mapper.TestMapper;
-import model.entity.Answer;
-import model.entity.Question;
 import model.entity.Subject;
 import model.entity.Test;
 import org.apache.log4j.Logger;
@@ -86,7 +83,7 @@ public class JDBCTestFactory implements TestDao {
         Map<Long, Test> tests = new HashMap<>();
         Map<Long, Subject> subjects = new HashMap<>();
 
-        try (PreparedStatement statement = connection.prepareStatement(properties.getProperty("FIND_TEST_BY_SUBJECT"))) {
+        try (PreparedStatement statement = connection.prepareStatement(properties.getProperty("TEST_FIND_BY_SUBJECT"))) {
             statement.setLong(1, subjectId);
             ResultSet resultSet = statement.executeQuery();
             TestMapper testMapper = new TestMapper();
@@ -112,14 +109,14 @@ public class JDBCTestFactory implements TestDao {
 
     @Override
     public void createTest (Test test, Long subjectId) {
-        try (PreparedStatement statement2 = connection.prepareStatement(properties.getProperty("TEST_CREATE"))){
-            statement2.setString(1, test.getEnName());
-            statement2.setString(2, test.getUaName());
-            statement2.setLong(3, test.getDifficulty());
-            statement2.setInt(4, test.getQuestionAmount());
-            statement2.setTimestamp(5, Timestamp.valueOf(test.getTestDate()));
-            statement2.setLong(6, subjectId);
-            statement2.executeUpdate();
+        try (PreparedStatement statement = connection.prepareStatement(properties.getProperty("TEST_CREATE"))){
+            statement.setString(1, test.getEnName());
+            statement.setString(2, test.getUaName());
+            statement.setLong(3, test.getDifficulty());
+            statement.setInt(4, test.getQuestionAmount());
+            statement.setTimestamp(5, Timestamp.valueOf(test.getTestDate()));
+            statement.setLong(6, subjectId);
+            statement.executeUpdate();
         } catch (SQLException e) {
             logger.error("SQLException in JDBCUserFactory: create", e);
         } finally {
@@ -142,12 +139,12 @@ public class JDBCTestFactory implements TestDao {
             statement.setTimestamp(5, Timestamp.valueOf(test.getTestDate()));
             statement.executeUpdate();
         } catch (SQLException e) {
-            logger.error("SQLException in JDBCUserFactory: create", e);
+            logger.error("SQLException in JDBCUserFactory: update", e);
         } finally {
             try {
                 connection.close();
             } catch (SQLException e) {
-                logger.error("SQLException in JDBCUserFactory: create", e);
+                logger.error("SQLException in JDBCUserFactory: update", e);
             }
         }
     }
@@ -155,10 +152,11 @@ public class JDBCTestFactory implements TestDao {
     @Override
     public void deleteTest (Long testId) {
         List <Long> questionIds = new ArrayList<>();
-        try (PreparedStatement statement1 = connection.prepareStatement(properties.getProperty("QUESTION_ID.FIND_BY_ID"));
+        try (PreparedStatement statement1 = connection.prepareStatement(properties.getProperty("QUESTION_ID_FIND_BY_TEST_ID"));
              PreparedStatement statement2 = connection.prepareStatement(properties.getProperty("ANSWER_DELETE"));
              PreparedStatement statement3 = connection.prepareStatement(properties.getProperty("QUESTION_DELETE"));
              PreparedStatement statement4 = connection.prepareStatement(properties.getProperty("TEST_DELETE"))){
+            connection.setAutoCommit(false);
             statement1.setLong(1, testId);
             ResultSet resultSet1 = statement1.executeQuery();
             while(resultSet1.next()) {
@@ -173,30 +171,57 @@ public class JDBCTestFactory implements TestDao {
             statement3.executeUpdate();
             statement4.setLong(1, testId);
             statement4.executeUpdate();
-
+            connection.commit();
+            connection.setAutoCommit(true);
         } catch (SQLException e) {
-            logger.error("SQLException in JDBCUserFactory: create", e);
+            logger.error("SQLException in JDBCUserFactory: delete", e);
         } finally {
             try {
                 connection.close();
             } catch (SQLException e) {
-                logger.error("SQLException in JDBCUserFactory: create", e);
+                logger.error("SQLException in JDBCUserFactory: delete", e);
             }
         }
     }
 
-    /*@Override
-    public List<Test> findAllTestsByName() {
+    @Override
+    public List<Test> findAll() {
         Map<Long, Test> tests = new HashMap<>();
-
-
-        try (PreparedStatement statement = connection.prepareStatement(properties.getProperty("FIND_TEST_BY_NAME"))) {
+        try (PreparedStatement statement = connection.prepareStatement(properties.getProperty("TEST_SELECT_ALL"))) {
             ResultSet resultSet = statement.executeQuery();
             TestMapper testMapper = new TestMapper();
             while(resultSet.next()) {
                 Test test = testMapper.extractFromResultSet(resultSet);
                 testMapper.makeUnique(tests, test);
+            }
+        } catch (SQLException e) {
+            logger.error("IOException in JDBCAnswerFactory: findAll", e);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                logger.error("IOException in JDBCAnswerFactory: findAll", e);
+            }
+        }
+        return new ArrayList<>(tests.values());
+    }
 
+
+    @Override
+    public List<Test> sortTests() {
+        Map<Long, Test> tests = new HashMap<>();
+        Map<Long, Subject> subjects = new HashMap<>();
+
+        try (PreparedStatement statement = connection.prepareStatement(properties.getProperty("TEST_FIND_ALL_WITH_SUBJECTS"))) {
+            ResultSet resultSet = statement.executeQuery();
+            TestMapper testMapper = new TestMapper();
+            SubjectMapper subjectMapper = new SubjectMapper();
+            while(resultSet.next()) {
+                Test test = testMapper.extractFromResultSet(resultSet);
+                testMapper.makeUnique(tests, test);
+                Subject subject= subjectMapper.extractFromResultSet(resultSet);
+                subject = subjectMapper.makeUnique(subjects, subject);
+                test.setSubject(subject);
             }
         } catch (SQLException e) {
             logger.error("SQLException in JDBCTestFactory: findAllByName", e);
@@ -208,5 +233,5 @@ public class JDBCTestFactory implements TestDao {
             }
         }
         return new ArrayList<>(tests.values());
-    }*/
+    }
 }

@@ -16,6 +16,7 @@ public class CommandUtility {
         request.getSession().getServletContext().setAttribute("loggedUsers", loggedUsers);
         HttpSession session = request.getSession();
         session.setAttribute("user", user);
+        session.setAttribute("role", user.getRole().name());
         return false;
     }
 
@@ -25,5 +26,6 @@ public class CommandUtility {
         request.getSession().getServletContext().setAttribute("loggedUsers", loggedUsers);
         HttpSession session = request.getSession();
         session.setAttribute("user", null);
+        session.setAttribute("role", null);
     }
 }

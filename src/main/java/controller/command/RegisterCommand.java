@@ -1,10 +1,14 @@
 package controller.command;
 
+
 import model.entity.User;
 import model.entity.enums.Role;
 import model.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -20,6 +24,9 @@ public class RegisterCommand implements Command {
         Locale uklocale = new Locale("uk", "UA");
         ResourceBundle ukResourceBundle = ResourceBundle.getBundle("outputs", uklocale);
         ResourceBundle enResourceBundle = ResourceBundle.getBundle("outputs", Locale.getDefault());
+        /*@NotNull(message = "question id must not be null")
+        @Pattern(regexp="[A-Z0-9a-z]{3,20}",message="length must be from 3 to 20")
+        @NotEmpty(message = "ukrainian answer name must not be empty")*/
         String enFirstName = request.getParameter("enFirstName");
         String enLastName = request.getParameter("enLastName");
         String uaFirstName = request.getParameter("uaFirstName");
