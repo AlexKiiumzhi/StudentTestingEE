@@ -26,6 +26,11 @@ public class JDBCSubjectFactory implements SubjectDao {
         }
     }
 
+    /**
+     * Retrieve a subject from database by his id
+     * @param id Id of subject that will be found
+     * @return Subject object
+     */
     @Override
     public Subject findById(int id) {
         Subject subject = new Subject();
@@ -43,6 +48,11 @@ public class JDBCSubjectFactory implements SubjectDao {
         }
     }
 
+    /**
+     * Retrieves all subjects from database
+     *
+     * @return List<Subject> list of subjects
+     */
     @Override
     public List<Subject> findAll() {
         Map<Long, Subject> subjects = new HashMap<>();

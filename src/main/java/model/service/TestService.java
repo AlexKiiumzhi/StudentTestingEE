@@ -47,6 +47,11 @@ public class TestService {
         TestDao dao = daoFactory.createTestDao();
         return dao.findAll();
     }
+    /**
+     * Sorts the tests retrieved from database by using stream api
+     *
+     * @return List<Answer> list of tests
+     */
     public List<Test> sortTests(String sortingParameter) {
         TestDao dao = daoFactory.createTestDao();
         List<Test> tests = dao.sortTests();

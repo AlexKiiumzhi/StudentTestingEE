@@ -32,7 +32,7 @@ public class JDBCUserFactory implements UserDao {
      * Guest can register in system by providing the information needed and if the email is not already present
      * in the database then the user is created
      *
-     * @param user all information needed to create a user
+     * @param user User object that will be mapped and saved to database
      */
     @Override
     public void createUser(User user) {
@@ -58,6 +58,11 @@ public class JDBCUserFactory implements UserDao {
         }
     }
 
+    /**
+     * User can see all his registration information on home page by retrieving a mapped user object from database
+     * @param userId current user
+     * @return User object
+     */
     @Override
     public User getUserRegistrationInfo(Long userId) {
         User user = new User();
@@ -70,17 +75,22 @@ public class JDBCUserFactory implements UserDao {
             }
 
         } catch (SQLException e) {
-            logger.error("SQLException in JDBCUserFactory: createuser", e);
+            logger.error("SQLException in JDBCUserFactory: get user information", e);
         } finally {
             try {
                 connection.close();
             } catch (SQLException e) {
-                logger.error("SQLException in JDBCUserFactory: createuser", e);
+                logger.error("SQLException in JDBCUserFactory: get user information", e);
             }
         }
         return user;
     }
 
+    /**
+     * User can see all his tests with marks on home page by retrieving a mapped test object and user marks from database
+     * @param userId current user
+     * @return List<TestsWithResultsDto> List of tests with results
+     */
     @Override
     public List<TestsWithResultsDto> getUserTests(Long userId) {
         Map<Long, TestsWithResultsDto> TestsWithResultsDtos = new HashMap<>();
@@ -100,17 +110,22 @@ public class JDBCUserFactory implements UserDao {
             }
 
         } catch (SQLException e) {
-            logger.error("SQLException in JDBCUserFactory: createuser", e);
+            logger.error("SQLException in JDBCUserFactory: get user tests", e);
         } finally {
             try {
                 connection.close();
             } catch (SQLException e) {
-                logger.error("SQLException in JDBCUserFactory: createuser", e);
+                logger.error("SQLException in JDBCUserFactory: get user tests", e);
             }
         }
         return new ArrayList<>(TestsWithResultsDtos.values());
     }
 
+    /**
+     * Retrieve a user from database by his email
+     * @param email Email of the user to be found
+     * @return User object
+     */
     @Override
     public User findByEmail(String email) {
         User user = new User();
@@ -133,6 +148,10 @@ public class JDBCUserFactory implements UserDao {
         return user;
     }
 
+    /**
+     * Admin can block a user by providing an id of the user and saves the changes in database
+     * @param userId User ID
+     */
     @Override
     public void blockUser(Long userId) {
         try (PreparedStatement statement = connection.prepareStatement(properties.getProperty("USER_BlOCK"))) {
@@ -149,6 +168,10 @@ public class JDBCUserFactory implements UserDao {
         }
     }
 
+    /**
+     * Admin can unblock a user by providing an id of the user and saves the changes in database
+     * @param userId User ID
+     */
     @Override
     public void unblockUser(Long userId) {
         try (PreparedStatement statement = connection.prepareStatement(properties.getProperty("USER_UNBlOCK"))) {
@@ -165,6 +188,11 @@ public class JDBCUserFactory implements UserDao {
         }
     }
 
+    /**
+     * Admin can edit a user and changing the test ids selected bu the user by providing the information needed according
+     * to the userEditDto and after checking the id existence in the database, the changes are saved
+     * @param (user, testIds) all information needed to edit a user
+     */
     @Override
     public void editUser (User user, List<Long> testIds) {
         try (PreparedStatement statement1 = connection.prepareStatement(properties.getProperty("USER_TEST_INSERT"));
@@ -198,6 +226,12 @@ public class JDBCUserFactory implements UserDao {
         }
     }
 
+    /**
+     * User can select a test by providing a test id which then is saved for that user after checking if the test
+     *  does not already exist in user's List of tests
+     * @param (userId, testId) all information needed to select a test
+     * @return List of questions
+     */
     @Override
     public List<Question> testSelection(Long userId, Long testId) {
         Map<Long, Question> questions = new HashMap<>();
@@ -248,6 +282,11 @@ public class JDBCUserFactory implements UserDao {
         return new ArrayList<>(questions.values());
     }
 
+    /**
+     * User can pass a test by providing a testPassingDto then checking if the test does not already exist in user's List of tests
+     * and calculating the results by comparing the provided answer ids with the correct answer ids in the database
+     * @param (userId,testId,studentAnswers) all information needed to pass a test
+     */
     @Override
     public void testPassing(Long userId, Long testId, List<List<Long>> studentAnswers) {
 

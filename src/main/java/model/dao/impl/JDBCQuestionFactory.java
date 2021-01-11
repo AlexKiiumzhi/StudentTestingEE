@@ -34,6 +34,11 @@ public class JDBCQuestionFactory implements QuestionDao {
         }
     }
 
+    /**
+     * Admin can create a question for a test by providing the information needed then it is saved
+     *
+     * @param (question, testId) all information needed to create a question
+     */
     @Override
     public void createQuestion (Question question, Long testId) {
         try (PreparedStatement statement = connection.prepareStatement(properties.getProperty("QUESTION_CREATE"))){
@@ -52,6 +57,12 @@ public class JDBCQuestionFactory implements QuestionDao {
         }
     }
 
+    /**
+     * Admin can edit a question and changing its answers ids by providing the information needed
+     * and after checking the id existence in the database, the changes are saved
+     *
+     * @param (question, answerIds) all information needed to edit a question and answer ids related to it
+     */
     @Override
     public void editQuestion (Question question, List<Long> answerIds) {
 

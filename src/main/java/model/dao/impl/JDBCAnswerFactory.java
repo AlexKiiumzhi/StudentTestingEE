@@ -28,6 +28,11 @@ public class JDBCAnswerFactory implements AnswerDao {
         }
     }
 
+    /**
+     * Admin can create a answer by providing the information needed then it is saved
+     *
+     * @param (answer, questionId) all information needed to create an answer
+     */
     @Override
     public void createAnswer (Answer answer, Long questionId) {
         try (PreparedStatement statement = connection.prepareStatement(properties.getProperty("ANSWER_CREATE"))){
@@ -47,6 +52,11 @@ public class JDBCAnswerFactory implements AnswerDao {
         }
     }
 
+    /**
+     * Admin can edit an answer by providing the information needed then the changes are saved
+     *
+     * @param answer object that will update the existing one
+     */
     @Override
     public void editAnswer (Answer answer) {
         try (PreparedStatement statement = connection.prepareStatement(properties.getProperty("ANSWER_UPDATE"))){
@@ -66,6 +76,11 @@ public class JDBCAnswerFactory implements AnswerDao {
         }
     }
 
+    /**
+     * Retrieves all answers from database
+     *
+     * @return List<Answer> list of answers
+     */
     @Override
     public List<Answer> findAll() {
         Map<Long, Answer> answers = new HashMap<>();

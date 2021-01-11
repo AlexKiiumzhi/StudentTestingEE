@@ -28,6 +28,12 @@ public class JDBCTestFactory implements TestDao {
         }
     }
 
+    /**
+     * Retrieves All tests and the results are divided into pages by the pagination process
+     *
+     * @param (startIndex, recordPerPage) necessary information for pagination
+     * @return List<Test> List of Tests
+     */
     @Override
     public List<Test> findAllPagination(int startIndex, int recordPerPage) {
         Map<Long, Test> tests = new HashMap<>();
@@ -58,6 +64,11 @@ public class JDBCTestFactory implements TestDao {
         return new ArrayList<>(tests.values());
     }
 
+    /**
+     * Helps with the pagination process by counting how many rows or tests there is in database
+     *
+     * @return Int number of rows
+     */
     @Override
     public int numberOfRows() {
         int totalNumberOfRecords = 0;
@@ -78,6 +89,12 @@ public class JDBCTestFactory implements TestDao {
         return totalNumberOfRecords;
     }
 
+    /**
+     * Implements a filtering process for tests to be shown
+     *
+     * @param subjectId
+     * @return List<Test> All tests of a specific subject
+     */
     @Override
     public List<Test> findBySubject(Long subjectId) {
         Map<Long, Test> tests = new HashMap<>();
@@ -107,6 +124,11 @@ public class JDBCTestFactory implements TestDao {
         return new ArrayList<>(tests.values());
     }
 
+    /**
+     * Admin can create a test by providing the information needed then it is saved
+     *
+     * @param (test, subjectID) all information needed to create a test
+     */
     @Override
     public void createTest (Test test, Long subjectId) {
         try (PreparedStatement statement = connection.prepareStatement(properties.getProperty("TEST_CREATE"))){
@@ -128,6 +150,11 @@ public class JDBCTestFactory implements TestDao {
         }
     }
 
+    /**
+     * Admin can edit a test by providing the information needed then it is saved
+     *
+     * @param test object that will update the existing one
+     */
     @Override
     public void editTest (Test test) {
         try (PreparedStatement statement = connection.prepareStatement(properties.getProperty("TEST_UPDATE"))){
@@ -149,6 +176,11 @@ public class JDBCTestFactory implements TestDao {
         }
     }
 
+    /**
+     * Admin can delete a test by providing the information needed then the changes are saved in database
+     *
+     * @param testId Id of test that will be deleted
+     */
     @Override
     public void deleteTest (Long testId) {
         List <Long> questionIds = new ArrayList<>();
@@ -184,6 +216,11 @@ public class JDBCTestFactory implements TestDao {
         }
     }
 
+    /**
+     * Retrieves all tests from database
+     *
+     * @return List<Test>
+     */
     @Override
     public List<Test> findAll() {
         Map<Long, Test> tests = new HashMap<>();
@@ -206,7 +243,11 @@ public class JDBCTestFactory implements TestDao {
         return new ArrayList<>(tests.values());
     }
 
-
+    /**
+     * Retrieves all tests with respective subjects from database
+     *
+     * @return List<Test>
+     */
     @Override
     public List<Test> sortTests() {
         Map<Long, Test> tests = new HashMap<>();
