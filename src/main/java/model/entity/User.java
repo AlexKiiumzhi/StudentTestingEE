@@ -1,21 +1,41 @@
 package model.entity;
 
 import model.entity.enums.Role;
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.constraints.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class User {
 
+
     private Long id;
     private Role role;
+    @Pattern(regexp="[A-Za-z]{3,100}", message = "Field english first name must be a minimum length of 3!")
+    @NotEmpty(message = "Field english first name must not be empty!")
     private String enFirstName;
+    @Pattern(regexp="[А-ЩЬЮЯҐЄІЇа-щьюяґєії]{3,100}", message = "Field english last name must be a minimum length of 3 and only ukrainian letters!")
+    @NotEmpty(message = "Field english last name must not be empty!")
     private String uaFirstName;
+    @Pattern(regexp="[A-Za-z]{3,100}", message = "Field  ukrainian Last name must be a minimum length of 3!")
+    @NotEmpty(message = "Field ukrainian Last name must not be empty!")
     private String enLastName;
+    @Pattern(regexp="[А-ЩЬЮЯҐЄІЇа-щьюяґєії]{3,100}", message = "Field ukrainian last name must be a minimum length of 3 and only ukrainian letters!")
+    @NotEmpty(message = "Field ukrainian last name must not be empty!")
     private String uaLastName;
+    @NotEmpty(message = "Field email must not be empty!")
+    @Email()
     private String email;
+    @NotNull
+    @NotEmpty(message = "Field password must not be empty!")
+    @Pattern(regexp="[A-Z0-9a-z]{8,30}", message = "Field password must be a minimum length of 8 and only english letters!")
+    @Size(min = 8, max = 50 , message = " ")
     private String password;
     private int age;
+    @Pattern(regexp="[0-9]{10,20}", message = "Field phone must be a minimum length of 10 and only numbers!")
+    @NotEmpty(message = "Field phone must not be empty!")
     private String phone;
     private Boolean isBlocked;
     private List<Test> tests = new ArrayList<>();

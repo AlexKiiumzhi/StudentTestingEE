@@ -1,9 +1,17 @@
 package model.entity;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.validation.constraints.Pattern;
+
 public class Answer {
 
     private Long id;
+    @Pattern(regexp="[A-Za-z]{3,100}", message = "Field english description must be a minimum length of 3!")
+    @NotEmpty(message = "Field english description must not be empty!")
     private String enAnswer;
+    @Pattern(regexp="[А-ЩЬЮЯҐЄІЇа-щьюяґєії]{3,100}", message = "Field ukrainian description must be a minimum length of 3 and only ukrainian letters!")
+    @NotEmpty(message = "Field ukrainian description must not be empty!")
     private String uaAnswer;
     private Boolean correctnessState;
     private Question question;

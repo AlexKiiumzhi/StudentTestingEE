@@ -9,15 +9,18 @@
         <jsp:include page="uheader.jsp">
             <jsp:param name="title" value="${pageTitle}"/>
         </jsp:include><br><br>
+        <div align="center">
+            <h1><fmt:message key="heading.user.info"/> </h1>
+        </div>
 
         <table class="w3-table w3-bordered w3-striped">
             <thead>
             <tr>
                 <th><fmt:message key="user.id"/></th>
-                <th><fmt:message key="user.first_name_en"/></th>
-                <th><fmt:message key="user.last_name_en"/></th>
-                <th><fmt:message key="user.first_name_ua"/></th>
-                <th><fmt:message key="user.last_name_ua"/></th>
+                <th><fmt:message key="user.first_name.en"/></th>
+                <th><fmt:message key="user.last_name.en"/></th>
+                <th><fmt:message key="user.first_name.ua"/></th>
+                <th><fmt:message key="user.last_name.ua"/></th>
                 <th><fmt:message key="user.email"/></th>
                 <th><fmt:message key="user.password"/></th>
                 <th><fmt:message key="user.age"/></th>
@@ -56,7 +59,7 @@
         </table>
 
         <div align="center">
-            <h1><fmt:message key="create.test"/> </h1>
+            <h1><fmt:message key="heading.tests.with.marks"/> </h1>
         </div>
 
         <table class="w3-table w3-bordered w3-striped">

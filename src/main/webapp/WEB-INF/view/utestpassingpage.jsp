@@ -13,16 +13,24 @@
     <jsp:param name="title" value="${pageTitle}"/>
 </jsp:include><br><br>
 
+<div align="center">
+    <h1><fmt:message key="heading.user.test.selecting"/> </h1>
+</div>
+
 <form class="w3-center" action="${pageContext.request.contextPath}/app/user/testPassingPage/testSelecting" method="post">
     <label for="testId"><fmt:message key="user.choose_tests"/></label><br>
-    <input type="text" id="testId" name="testId"><br><br>
-    <input type="submit" value=<fmt:message key="Submit"/>>
+    <input type="number" min="1" id="testId" name="testId" placeholder="id number"><br><br>
+    <input type="submit" value=<fmt:message key="submit.button"/>>
 </form>
+
+<div align="center">
+    <h1><fmt:message key="heading.user.test.passing"/> </h1>
+</div>
 
 <form class="w3-center" action="${pageContext.request.contextPath}/app/user/testPassingPage/testPassing" method="post">
     <label for="testId1"><fmt:message key="user.pass_tests"/></label><br>
-    <input type="text" id="testId1" name="testId1"><br><br>
-    <input type="submit" value=<fmt:message key="Submit"/>>
+    <input type="number" min="1" id="testId1" name="testId1" placeholder="id number"><br><br>
+    <input type="submit" value=<fmt:message key="submit.button"/>>
 </form>
 
 <table class="w3-table w3-bordered w3-striped">

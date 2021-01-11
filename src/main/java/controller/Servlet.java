@@ -1,5 +1,6 @@
 package controller;
 
+import controller.Utility.ParameterValidator;
 import controller.command.*;
 import controller.command.Admin.*;
 import controller.command.User.*;
@@ -22,25 +23,25 @@ public class Servlet extends HttpServlet {
         getServletContext().setAttribute("loggedUsers", new HashSet<String>());
 
         commands.put("admin/home", new AdminShowHomeCommand(new TestService()));
-        commands.put("admin/blockUser", new BlockUserCommand(new UserService()));
-        commands.put("admin/unblockUser", new UnblockUserCommand(new UserService()));
+        commands.put("admin/blockUser", new BlockUserCommand(new UserService(), new ParameterValidator()));
+        commands.put("admin/unblockUser", new UnblockUserCommand(new UserService(), new ParameterValidator()));
         commands.put("admin/testPage", new ShowTestsPage(new AnswerService()));
-        commands.put("admin/testPage/createTest", new CreateTestCommand(new TestService()));
-        commands.put("admin/testPage/editTest", new EditTestCommand(new TestService()));
-        commands.put("admin/testPage/deleteTest", new DeleteTestCommand(new TestService()));
-        commands.put("admin/testPage/createQuestion", new CreateQuestionCommand(new QuestionService()));
-        commands.put("admin/testPage/editQuestion", new EditQuestionCommand(new QuestionService()));
-        commands.put("admin/testPage/createAnswer", new CreateAnswerCommand(new AnswerService()));
-        commands.put("admin/testPage/editAnswer", new EditAnswerCommand(new AnswerService()));
-        commands.put("admin/home/editUser", new EditUserCommand(new UserService()));
+        commands.put("admin/testPage/createTest", new CreateTestCommand(new TestService(), new ParameterValidator()));
+        commands.put("admin/testPage/editTest", new EditTestCommand(new TestService(), new ParameterValidator()));
+        commands.put("admin/testPage/deleteTest", new DeleteTestCommand(new TestService(), new ParameterValidator()));
+        commands.put("admin/testPage/createQuestion", new CreateQuestionCommand(new QuestionService(), new ParameterValidator()));
+        commands.put("admin/testPage/editQuestion", new EditQuestionCommand(new QuestionService(), new ParameterValidator()));
+        commands.put("admin/testPage/createAnswer", new CreateAnswerCommand(new AnswerService(), new ParameterValidator()));
+        commands.put("admin/testPage/editAnswer", new EditAnswerCommand(new AnswerService(), new ParameterValidator()));
+        commands.put("admin/home/editUser", new EditUserCommand(new UserService(), new ParameterValidator()));
         commands.put("admin/searchBySubject", new AdminSearchTestBySubjectCommand(new TestService(), new SubjectService()));
         commands.put("admin/sortTests", new AdminSortTestsCommand(new TestService(), new SubjectService()));
         commands.put("admin/tests", new AdminFindAllTestsCommand(new TestService(), new SubjectService()));
 
         commands.put("user/home", new UserShowHomeCommand(new UserService()));
         commands.put("user/testPassingPage", new ShowTestPassingPage());
-        commands.put("user/testPassingPage/testSelecting", new TestSelectionCommand(new UserService()));
-        commands.put("user/testPassingPage/testPassing", new TestPassingCommand(new UserService()));
+        commands.put("user/testPassingPage/testSelecting", new TestSelectionCommand(new UserService(), new ParameterValidator()));
+        commands.put("user/testPassingPage/testPassing", new TestPassingCommand(new UserService(), new ParameterValidator()));
         commands.put("user/searchBySubject", new UserSearchTestBySubjectCommand(new TestService(), new SubjectService()));
         commands.put("user/sortTests", new UserSortTestsCommand(new TestService(), new SubjectService()));
         commands.put("user/tests", new UserFindAllTestsCommand(new TestService(), new SubjectService()));
@@ -50,9 +51,9 @@ public class Servlet extends HttpServlet {
         commands.put("sortTests", new SortTestsCommand(new TestService(), new SubjectService()));
         commands.put("tests", new FindAllTestsCommand(new TestService(), new SubjectService()));
         commands.put("registrationPage", new ShowRegistrationCommand());
-        commands.put("registration", new RegisterCommand(new UserService()));
+        commands.put("registration", new RegisterCommand(new UserService(), new ParameterValidator()));
         commands.put("loginPage", new ShowLoginCommand());
-        commands.put("login", new LoginCommand(new UserService()));
+        commands.put("login", new LoginCommand(new UserService(), new ParameterValidator()));
         commands.put("logout", new LogoutCommand());
         commands.put("changeLanguage", new ChangeLanguageCommand());
     }

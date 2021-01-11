@@ -28,6 +28,12 @@ public class JDBCUserFactory implements UserDao {
         }
     }
 
+    /**
+     * Guest can register in system by providing the information needed and if the email is not already present
+     * in the database then the user is created
+     *
+     * @param user all information needed to create a user
+     */
     @Override
     public void createUser(User user) {
         try (PreparedStatement statement = connection.prepareStatement(properties.getProperty("USER_CREATE"))){
@@ -53,7 +59,7 @@ public class JDBCUserFactory implements UserDao {
     }
 
     @Override
-    public User getUserInfo(Long userId) {
+    public User getUserRegistrationInfo(Long userId) {
         User user = new User();
         try (PreparedStatement statement = connection.prepareStatement(properties.getProperty("USER_FIND_BY_ID"))){
             statement.setLong(1, userId);

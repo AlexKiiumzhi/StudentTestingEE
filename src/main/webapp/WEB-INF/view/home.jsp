@@ -9,15 +9,6 @@
             <jsp:include page="header.jsp">
                 <jsp:param name="title" value="${pageTitle}"/>
             </jsp:include>
-
-        </c:if>
-        <c:if test="${not empty user}">
-            <c:if test="${user.role == 'ADMIN'}">
-                <jsp:include page="ahome.jsp"/>
-            </c:if>
-            <c:if test="${user.role == 'USER'}">
-                <jsp:include page="uhome.jsp"/>
-            </c:if>
         </c:if>
     </body>
 </html>
